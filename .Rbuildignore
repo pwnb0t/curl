@@ -13,5 +13,7 @@ README.md
 ^R/sysdata.rda$
 ^src/*.def$
 ^appveyor\.yml$
-^revdep
 ^docker$
+^examples$
+^httpbin.md$
+^revdep$
