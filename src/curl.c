@@ -68,7 +68,9 @@ static size_t push(void *contents, size_t sz, size_t nmemb, void *ctx) {
   size_t newsize = req->size + realsize;
   if(newsize > req->limit) {
     size_t newlimit = 2 * req->limit;
-    //Rprintf("Resizing buffer to %d.\n", newlimit);
+    Rprintf("Current limit %d\n", req->limit);
+    Rprintf("Current newsize %d\n", newsize);
+    Rprintf("Resizing buffer to %d.\n", newlimit);
     void *newbuf = realloc(req->buf, newlimit);
     if(!newbuf)
       error("Failure in realloc. Out of memory?");
@@ -77,7 +79,9 @@ static size_t push(void *contents, size_t sz, size_t nmemb, void *ctx) {
   }
 
   /* append new data */
+  Rprintf("calling mempcy() with %d bytes (limit = %d)...", realsize, req->limit - req->size);
   memcpy(req->buf + req->size, contents, realsize);
+  Rprintf(" OK!\n");
   req->size = newsize;
   req->cur = req->buf;
   return realsize;
