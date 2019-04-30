@@ -3,11 +3,7 @@ cache: packages
 latex: false
 fortran: false
 
-matrix:
-  include:
-    - os: osx
-      osx_image: xcode7.3
-      before_install:
-        - sudo mkdir -p /Library/Developer/CommandLineTools/
-        - sudo ln -sf /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs /Library/Developer/CommandLineTools/
-      disable_homebrew: true
+os: osx
+osx_image: xcode7.3
+before_install: R CMD config CPPFLAGS
+disable_homebrew: true
