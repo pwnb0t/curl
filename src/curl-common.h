@@ -11,6 +11,8 @@
 typedef struct {
   unsigned char *buf;
   size_t size;
+  size_t allocated;
+  CURL *handle;
 } memory;
 
 typedef struct {

@@ -20,7 +20,8 @@ SEXP R_curl_fetch_memory(SEXP url, SEXP ptr, SEXP nonblocking){
   reset_errbuf(get_ref(ptr));
 
   /* buffer body */
-  memory body = {NULL, 0};
+  memory body = {0};
+  body.handle = handle;
   curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, append_buffer);
   curl_easy_setopt(handle, CURLOPT_WRITEDATA, &body);
 

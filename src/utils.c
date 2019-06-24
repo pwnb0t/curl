@@ -30,6 +30,8 @@ void reset_resheaders(reference *ref){
     free(ref->resheaders.buf);
   ref->resheaders.buf = NULL;
   ref->resheaders.size = 0;
+  ref->resheaders.allocated = 0;
+  ref->resheaders.handle = NULL;
 }
 
 void reset_errbuf(reference *ref){
@@ -100,6 +102,13 @@ size_t push_disk(void* contents, size_t sz, size_t nmemb, FILE *ctx) {
   return fwrite(contents, sz, nmemb, ctx);
 }
 
+static void grow_buffer(memory *mem, size_t newsize){
+  mem->buf = realloc(mem->buf, newsize);
+  mem->allocated = newsize;
+  if(mem->buf == NULL)
+    Rf_warningcall_immediate(R_NilValue, "Failed to allocate memory to grow buffer");
+}
+
 size_t append_buffer(void *contents, size_t sz, size_t nmemb, void *ctx) {
 //if (pending_interrupt())
   //  return 0;
@@ -108,19 +117,26 @@ size_t append_buffer(void *contents, size_t sz, size_t nmemb, void *ctx) {
   size_t realsize = sz * nmemb;
   memory *mem = (memory*) ctx;
 
-  /* realloc is slow on windows, therefore increase buffer to nearest 2^n */
-  #ifdef _WIN32
-    mem->buf = realloc(mem->buf, exp2(ceil(log2(mem->size + realsize))));
-  #else
-    mem->buf = realloc(mem->buf, mem->size + realsize);
-  #endif
+  /* try to ead content-length first time */
+  if(mem->handle != NULL && mem->allocated == 0 && realsize > 0){
+    double content_length = 0;
+    int res = curl_easy_getinfo(mem->handle, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &content_length);
+    if(res == CURLE_OK && content_length > 0)
+      grow_buffer(mem, content_length);
+  }
 
+  /* Over allocate to nearest 2^n */
+  size_t newsize = mem->size + realsize;
+  if(mem->allocated < newsize)
+    grow_buffer(mem, exp2(ceil(log2(newsize))));
+
+  /* Failure in allocation */
   if (!mem->buf)
     return 0;
 
   /* append data and increment size */
   memcpy(&(mem->buf[mem->size]), contents, realsize);
-  mem->size += realsize;
+  mem->size = newsize;
   return realsize;
 }
 
