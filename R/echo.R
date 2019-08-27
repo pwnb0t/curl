@@ -79,7 +79,7 @@ curl_echo <- function(handle, port = 9359, progress = interactive(), file = NULL
     httpuv::service(waittime)
     TRUE
   }
-  handle_setopt(handle, connecttimeout = 2, xferinfofunction = xfer, noprogress = FALSE, forbid_reuse = TRUE)
+  handle_setopt(handle, connecttimeout = 2, xferinfofunction = xfer, noprogress = FALSE)
   if(progress) cat("\n", file = stderr())
   input_url <- handle_data(handle)$url
   if(length(input_url) && nchar(input_url)){

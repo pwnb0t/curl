@@ -1,4 +1,4 @@
-# curl
+# rOpenSci: the *curl* package <img src="hexlogo.png" align="right" height="134.5" />
 
 ##### *A Modern and Flexible Web Client for R*
 

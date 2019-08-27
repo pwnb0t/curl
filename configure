@@ -10,8 +10,11 @@ PKG_DEB_NAME="libcurl4-openssl-dev"
 PKG_RPM_NAME="libcurl-devel"
 PKG_CSW_NAME="libcurl_dev"
 PKG_TEST_HEADER="<curl/curl.h>"
-PKG_LIBS="-lcurl"
+PKG_LIBS="-lcurl -lldap -lz  -lidn2"
 PKG_CFLAGS=""
+
+export INCLUDE_DIR="/Users/jeroen/libcurl/usr/local/include"
+export LIB_DIR="/Users/jeroen/libcurl/usr/local/lib"
 
 # Use pkg-config if available
 pkg-config --version >/dev/null 2>&1
