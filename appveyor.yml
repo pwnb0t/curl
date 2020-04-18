@@ -4,7 +4,7 @@
 init:
   ps: |
         $ErrorActionPreference = "Stop"
-        Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
+        Invoke-WebRequest http://raw.github.com/jeroen/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
 
 install:
@@ -20,6 +20,8 @@ environment:
     - R_VERSION: devel
     - R_VERSION: devel
       CURL_SSL_BACKEND: openssl
+    - R_VERSION: 4.0
+    - R_VERSION: oldrel
 
 build_script:
   - travis-tool.sh install_deps
