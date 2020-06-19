@@ -23,6 +23,7 @@ extern SEXP R_handle_reset(SEXP);
 extern SEXP R_handle_setform(SEXP, SEXP);
 extern SEXP R_handle_setheaders(SEXP, SEXP);
 extern SEXP R_handle_setopt(SEXP, SEXP, SEXP);
+extern SEXP R_list_options();
 extern SEXP R_multi_add(SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP R_multi_cancel(SEXP);
 extern SEXP R_multi_fdset(SEXP);
@@ -40,6 +41,9 @@ extern SEXP R_total_handles();
 extern SEXP R_total_writers();
 extern SEXP R_windows_build();
 extern SEXP R_write_file_writer(SEXP, SEXP, SEXP);
+extern SEXP R_get_opt_by_name(SEXP str);
+extern SEXP R_get_opt_by_id(SEXP id);
+
 
 static const R_CallMethodDef CallEntries[] = {
     {"R_curl_connection",     (DL_FUNC) &R_curl_connection,     3},
@@ -59,6 +63,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"R_handle_setform",      (DL_FUNC) &R_handle_setform,      2},
     {"R_handle_setheaders",   (DL_FUNC) &R_handle_setheaders,   2},
     {"R_handle_setopt",       (DL_FUNC) &R_handle_setopt,       3},
+    {"R_list_options",        (DL_FUNC) &R_list_options,        0},
     {"R_multi_add",           (DL_FUNC) &R_multi_add,           5},
     {"R_multi_cancel",        (DL_FUNC) &R_multi_cancel,        1},
     {"R_multi_fdset",         (DL_FUNC) &R_multi_fdset,         1},
@@ -76,6 +81,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"R_total_writers",       (DL_FUNC) &R_total_writers,       0},
     {"R_windows_build",       (DL_FUNC) &R_windows_build,       0},
     {"R_write_file_writer",   (DL_FUNC) &R_write_file_writer,   3},
+    {"R_get_opt_by_name",     (DL_FUNC) &R_get_opt_by_name,   1},
+    {"R_get_opt_by_id",       (DL_FUNC) &R_get_opt_by_id,   1},
     {NULL, NULL, 0}
 };
 
