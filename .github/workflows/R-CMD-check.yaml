@@ -20,22 +20,25 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-10.15,r: 'release'}
+          - {os: macOS-11,   r: 'release'}
+          - {os: macOS-11,   r: 'release'}
+          - {os: macOS-11,   r: 'release'}
+          - {os: macOS-11,   r: 'release'}
           - {os: macOS-11,   r: 'release'}
           - {os: macOS-12,   r: 'release'}
-          - {os: windows-latest, r: 'release', ssl-backend: openssl}
-          - {os: windows-latest, r: 'release'}
-          - {os: windows-latest, r: '4.1', ssl-backend: openssl}
-          - {os: windows-latest, r: '4.1'}
-          - {os: windows-latest, r: '3.6'}
-          - {os: ubuntu-22.04,    r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-20.04,   r: 'release'}
+          - {os: macOS-12,   r: 'release'}
+          - {os: macOS-12,   r: 'release'}
+          - {os: macOS-12,   r: 'release'}
+          - {os: macOS-12,   r: 'release'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
 
     steps:
+      - name: Cleanup
+        run: rm -Rfv ~/Library/Logs/DiagnosticReports/*
+
       - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
@@ -54,3 +57,9 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         env:
           CURL_SSL_BACKEND: ${{ matrix.config.ssl-backend }}
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: crashreport
+          path: ~/Library/Logs/DiagnosticReports/
